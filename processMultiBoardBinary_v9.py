@@ -95,12 +95,14 @@ def processMultiChanBinary(name, HV=[], currs=[], uts=[], biasVoltage=0, txtFlag
     n_boards = np.array([0],dtype=int)
     n_chans = np.array([0],dtype=int)
     samplingRate = np.array([0.],"float32")
+    totTime = np.array([0.],"float32")
     metaChannels = np.empty(100,dtype=int)
     metaIds = np.empty(100,dtype=int)
 
     b_numBoards = metaTree.Branch("numBoards",n_boards,"boads/I")
     b_numChans = metaTree.Branch("numChan",n_chans,"numChan/I")
     b_samplingRate = metaTree.Branch("samplingRate",samplingRate,"samplingRate/F")
+    b_totTime = metaTree.Branch("totTime",totTime,"totTime/F")
 
     b_channels = metaTree.Branch("channels",metaChannels,"channels[100]/I")
     b_board_ids = metaTree.Branch("board_ids",metaIds,"board_ids[100]/I")
@@ -368,6 +370,7 @@ def processMultiChanBinary(name, HV=[], currs=[], uts=[], biasVoltage=0, txtFlag
     print("Measured sampling rate: {0:.2f} GHz".format(1.0/np.mean(rates)))
     samplingRate[0] =1.0/np.mean(rates) 
     print (samplingRate[0])
+    totTime[0] = t_tot.total_seconds()
     metaTree.Fill()
     print("Total time of run = " + str(t_tot) +
           " = " + str(t_sec) + " seconds.")
